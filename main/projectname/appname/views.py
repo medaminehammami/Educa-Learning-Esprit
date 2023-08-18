@@ -43,10 +43,10 @@ def teacher_profile(request):
     return render(request, template_paths[template_name])
 
 def teachers(request):
-    template_name = 'teachers '  
+    template_name = 'teachers'  
     return render(request, template_paths[template_name])
 
 def update(request):
-    template_name = 'update '  
+    template_name = 'update'  
     return render(request, template_paths[template_name])
 
