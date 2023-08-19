@@ -6,6 +6,7 @@ template_paths = {
     'home': os.path.join(app_base_path, 'appname/templates/home.html'),
     'about': os.path.join(app_base_path, 'appname/templates/about.html'),
     'contact': os.path.join(app_base_path, 'appname/templates/contact.html'),
+    'catagories': os.path.join(app_base_path, 'appname/templates/catagories.html'),   
     'courses': os.path.join(app_base_path, 'appname/templates/courses.html'),
     'playlist': os.path.join(app_base_path, 'appname/templates/playlist.html'),
     'watchvideo': os.path.join(app_base_path, 'appname/templates/watchvideo.html'),
