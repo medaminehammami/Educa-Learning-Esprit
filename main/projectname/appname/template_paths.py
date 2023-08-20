@@ -11,11 +11,8 @@ template_paths = {
     'playlist': os.path.join(app_base_path, 'appname/templates/playlist.html'),
     'watchvideo': os.path.join(app_base_path, 'appname/templates/watchvideo.html'),
     'profile': os.path.join(app_base_path, 'appname/templates/profile.html'),
-    'login': os.path.join(app_base_path, 'appname/templates/login.html'),
-    'register': os.path.join(app_base_path, 'appname/templates/register.html'),
     'teacher_profile': os.path.join(app_base_path, 'appname/templates/teacher_profile.html'),
     'teachers': os.path.join(app_base_path, 'appname/templates/teachers.html'),
-    'update': os.path.join(app_base_path, 'appname/templates/update.html'),   
 }
 
 

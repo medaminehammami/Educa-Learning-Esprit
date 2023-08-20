@@ -17,7 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from appname import views
+from register import views as v
 from django.views.generic.base import RedirectView
+
 
 
 urlpatterns = [
@@ -30,12 +32,12 @@ urlpatterns = [
     path('courses/<str:catagory_name>/' , views.courses, name='courses'),
     path('watchvideo/<int:lesson_id>/', views.watchvideo, name='watchvideo'),
     path('profile/', views.profile, name='profile'),
-    path('login/', views.login, name='login'),
-    path('register/', views.register, name='register'),
     path('teacher_profile/<int:teacher_id>/', views.teacher_profile, name='teacher_profile'),
     path('teachers/', views.teachers, name='teachers'),
-    path('update/', views.update, name='update'),
     path('catagories/', views.catagories, name='catagories'),
+    path('login/', v.login, name='login'),
+    path('register/', v.register, name='register'),
+    path('update/', v.update, name='update'),
 
     
 ]

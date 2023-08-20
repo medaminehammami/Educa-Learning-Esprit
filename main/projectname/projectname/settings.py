@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'appname'
+    'appname',
+    'register',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +58,11 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'APP_DIRS': True,
-        'DIRS':  [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),  # Main project-level templates
+            os.path.join(BASE_DIR, 'appname', 'templates'),  # App-level templates for appname
+            os.path.join(BASE_DIR, 'register', 'templates'),  # App-level templates for register
+        ],
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -120,7 +125,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'static'),  # Project-level static files
+    os.path.join(BASE_DIR, 'appname', 'static'),  # App-level static files for appname
 ]
 
 # Default primary key field type
