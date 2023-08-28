@@ -1,12 +1,15 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
-# Create your models here.
 
-class RegisterForm(UserCreationForm):
-    email = forms.EmailField()
-    class Meta:
-	    model = User
-	    fields = ["username", "email", "password1", "password2"]
+class CustomUser(AbstractUser):
+    class Role(models.TextChoices):
+        STUDENT = "STUDENT", "Student"
+        TEACHER = "TEACHER", "Teacher"
+
+    role = models.CharField(max_length=50, choices=Role.choices)
+
+
+
+
 

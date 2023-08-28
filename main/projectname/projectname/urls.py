@@ -19,25 +19,30 @@ from django.urls import path
 from appname import views
 from register import views as v
 from django.views.generic.base import RedirectView
+from django.contrib.auth.decorators import login_required
+
 
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', RedirectView.as_view(url='/home/', permanent=True)),
-    path('home/', views.home, name='home'),
+    path('home/',views.home, name='home'),
     path('about/', views.about, name='about'),
-    path('contact/', views.contact, name='contact'),
-    path('playlist/<str:topic_name>/', views.playlist, name='playlist'),
+    path('contact/',views.contact, name='contact'),
+    path('playlist/<str:topic_name>/',views.playlist, name='playlist'),
     path('courses/<str:catagory_name>/' , views.courses, name='courses'),
     path('watchvideo/<int:lesson_id>/', views.watchvideo, name='watchvideo'),
     path('profile/', views.profile, name='profile'),
-    path('teacher_profile/<int:teacher_id>/', views.teacher_profile, name='teacher_profile'),
+    path('student_profile/', views.student_profile, name='student_profile'),
     path('teachers/', views.teachers, name='teachers'),
     path('catagories/', views.catagories, name='catagories'),
     path('login/', v.login, name='login'),
+    path('logout/', v.logout_view, name='logout'),
     path('register/', v.register, name='register'),
     path('update/', v.update, name='update'),
-
+    path('teacher_profile/', views.teacher_profile, name='teacher_profile'),
+    path('name_teacher/<str:teacher_name>/', views.name_teacher, name='name_teacher'),
+    
     
 ]

@@ -57,7 +57,7 @@
    <div class="profile">
       <img src="{% static 'images/pic-1.jpg' %}" class="image" alt="">
       <h3 class="name">Moe</h3>
-      <p class="role">studen</p>
+      <p class="role">student</p>
       <a href="{% url 'profile' %}" class="btn">view profile</a>
    </div>
 
@@ -86,9 +86,12 @@
       <p>confirm password <span>*</span></p>
       <input type="password" name="password2" placeholder="confirm your password" required maxlength="20" class="box">
       <p>Your Role <span>*</span></p>
-   
+      <select name="role",title="role">
+         <option value="STUDENT">Student</option>
+         <option value="TEACHER">Teacher</option>
+     </select>
       <p> <span>{{ form.errors }}</span></p>
-   
+
       <input type="submit" value="register new" name="submit" class="btn">
    </form>
 

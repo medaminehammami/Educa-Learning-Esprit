@@ -1,12 +1,37 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Topic, Lesson, Catagory ,Teacher
+from django.shortcuts import render, redirect ,HttpResponseRedirect ,HttpResponse
+from register.models import CustomUser
+from .models import Topic, Lesson, Catagory,Likes,Comments,EnrolledClasses,TeacherProfile,StudentProfile,Student,Teacher
 from .template_paths import template_paths
 from django.urls import reverse
 import random
+from django.contrib.auth.decorators import login_required
 
+def name_teacher(request, teacher_name='Paul'):
+    try:
+        teacher_profile = TeacherProfile.objects.get(user__username=teacher_name)
+        topics = Topic.objects.filter(teacher=teacher_profile.user)
+        context = {
+            'teacher_profile': teacher_profile,
+            'topics': topics,
+        }
+        template_name = 'name_teacher'
+        return render(request, template_paths[template_name], context)
+    except Teacher.DoesNotExist:
+        return HttpResponse("Teacher not found")
+
+
+@login_required
 def home(request):
+    likes_count = Likes.objects.all().count()
+    lessons_count = Lesson.objects.all().count()
+    topics_count = Topic.objects.all().count()
+    context = {
+        'likes_count': likes_count,
+        'lessons_count': lessons_count,
+        'topics_count' :topics_count
+    }
     template_name = 'home'  
-    return render(request, template_paths[template_name])
+    return render(request, template_paths[template_name],context)
 
 def about(request):
     template_name = 'about'  
@@ -34,64 +59,85 @@ def courses(request, catagory_name='development'):
 
 def playlist(request, topic_name='HTML'):
     lessons = Lesson.objects.filter(topic__name=topic_name)
+    number_lessons = lessons.count()
     context = {
         'topic_name': topic_name,
         'lessons': lessons,
+        'number_lessons': number_lessons
     }
     template_name = 'playlist'  
     return render(request, template_paths[template_name], context)
 
 def watchvideo(request,lesson_id=1):
-    lesson = get_object_or_404(Lesson, pk=lesson_id)
+    lesson = Lesson.objects.get(pk=lesson_id)
     context = {
         'lesson': lesson,
     }
     template_name = 'watchvideo'  
     return render(request, template_paths[template_name],context)
 
+@login_required
 def profile(request):
-    template_name = 'profile'  
-    return render(request, template_paths[template_name])
+    user = request.user  # Get the currently logged-in user
+    if user.role == 'STUDENT':
+        return HttpResponseRedirect('/student_profile/')
+    elif user.role == 'TEACHER':
+        return HttpResponseRedirect('/teacher_profile/')
+    
 
-def login(request):
-    template_name = 'login'  
-    return render(request, template_paths[template_name])
-
-def register(request):
-    template_name = 'register'  
-    return render(request, template_paths[template_name])
-
-def teacher_profile(request,teacher_id=1):
-    teacher = Teacher.objects.get(pk=teacher_id)
-    topics = teacher.topic_set.all()  # Assuming you've set a related name for the ForeignKey in Topic model
+@login_required
+def teacher_profile(request):
+    # Get the logged-in user's TeacherProfile
+    teacher_profile = TeacherProfile.objects.get(user=request.user)
+    # Get topics related to the teacher
+    topics = Topic.objects.filter(teacher=request.user)
     context = {
-        'teacher': teacher,
+        'teacher_profile': teacher_profile,
         'topics': topics,
     }
-    template_name = 'teacher_profile'  
-    return render(request, template_paths[template_name],context)
+    template_name = 'teacher_profile'
+    return render(request, template_paths[template_name], context)
+
+@login_required
+def student_profile(request):
+    # Get the logged-in user's StudentProfile
+    student_profile = StudentProfile.objects.get(user=request.user)
+    # Get enrolled classes related to the student
+    enrolled = EnrolledClasses.objects.filter(student=request.user)
+
+    topics = []  # Initialize an empty list to store topics
+
+    for classes in enrolled:
+        topics.extend(Topic.objects.filter(name=classes.topic_name))
+
+    context = {
+        'student_profile': student_profile,
+        'topics': topics,
+    }
+    template_name = 'student_profile'
+    return render(request, template_paths[template_name], context)
+
 
 def teachers(request):
-    teachers = Teacher.objects.distinct()  # Retrieve unique teachers
+    teacher_profiles = TeacherProfile.objects.all()  # Retrieve all teacher profiles
     teacher_data = []
-    for teacher in teachers:
-        topics = teacher.topic_set.all()
-        total_lessons = sum(topic.lesson_set.count() for topic in topics)
-        x=0
-        likes=str(random.randint(50, 800))
+    
+    for teacher_profile in teacher_profiles:
+        teacher = teacher_profile.user # Get the associated Teacher instance
+        topics = Topic.objects.filter(teacher=teacher)
+        topic = topics.first()
         teacher_data.append({
-            'teacher': teacher,
-            'total_lessons': total_lessons,
-            'likes' : likes
-        })
+            'teacher_user': teacher_profile.user.username,
+            'teacher_role': teacher_profile.user.role,
+            'teacher_topics': teacher_profile.number_topics,
+            'teacher_lessons': teacher_profile.number_lessons,
+            'topic_name': topic
+            })
 
     context = {
         'teacher_data': teacher_data
     }
     template_name = 'teachers'  
-    return render(request, template_paths[template_name],context)
+    return render(request, template_paths[template_name], context)
 
-def update(request):
-    template_name = 'update'  
-    return render(request, template_paths[template_name])
 
