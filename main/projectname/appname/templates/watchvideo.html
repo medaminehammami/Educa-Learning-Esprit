@@ -24,7 +24,7 @@
 
          <a href="{% url 'home' %}" class="logo">Educa.</a>
 
-         <form action="" method="post" class="search-form">
+         <form action="" method="" class="search-form">
             <input type="text" name="search_box" required placeholder="search courses..." maxlength="100">
             <button type="submit" class="fas fa-search"></button>
          </form>
@@ -97,12 +97,16 @@
                <span>developer</span>
             </div>
          </div>
-         <form action="" method="post" class="flex">
+         <section class="flex">
             {% with lesson_topic=lesson.topic %}
             <a href="{% url 'playlist' lesson_topic.name %}" class="inline-btn">view playlist</a>
-            <button><i class="far fa-heart"></i><span>like</span></button>
+            <form action="" method="post" class="save-playlist">
+               {% csrf_token %}
+               <input type="hidden" name="form_type" value="like_input">
+               <button><i class="far fa-heart"></i><span>like</span></button>
+            </form>
             {% endwith %}
-         </form>
+         </section>
 
       </div>
 
@@ -112,14 +116,14 @@
    <section class="comments">
 
       <h1 class="heading">5 comments</h1>
-
-      <form action="" class="add-comment">
+      <form action="" method="post" class="add-comment">
+         {% csrf_token %}
+         <input type="hidden" name="form_type" value="comment_input">
          <h3>add comments</h3>
-         <textarea name="comment_box" placeholder="enter your comment" required maxlength="1000" cols="30"
-            rows="10"></textarea>
+         <textarea id="comment_text" name="comment_text" placeholder="enter your comment" required maxlength="1000" cols="30" rows="10"></textarea>
          <input type="submit" value="add comment" class="inline-btn" name="add_comment">
       </form>
-
+      <br>
       <h1 class="heading">user comments</h1>
 
       <div class="box-container">
@@ -128,28 +132,34 @@
             <div class="user">
                <img src="{% static 'images/pic-1.jpg' %}" alt="">
                <div>
-                  <h3>Moe</h3>
+                  <h3>{{request.user.username}}</h3>
                   <span>22-10-2022</span>
                </div>
             </div>
-            <div class="comment-box">this is a comment form Moe</div>
+            <div class="comment-box">
+               {% for comment in comment_user %}
+                  <p>{{ comment.comment_text|safe }}</p><br>
+               {% endfor %}
+            </div>
             <form action="" class="flex-btn">
                <input type="submit" value="edit comment" name="edit_comment" class="inline-option-btn">
                <input type="submit" value="delete comment" name="delete_comment" class="inline-delete-btn">
             </form>
          </div>
-
+         
+      
+         {% for comment in comments %}
          <div class="box">
             <div class="user">
                <img src="{% static 'images/pic-2.jpg' %}" alt="">
                <div>
-                  <h3>john deo</h3>
+                  <h3>{{ comment.student }}</h3>
                   <span>22-10-2022</span>
                </div>
             </div>
-            <div class="comment-box">awesome tutorial!
-               keep going!</div>
+            <div class="comment-box">{{ comment.comment_text|safe }} </div>
          </div>
+         {% endfor %}
 
          <div class="box">
             <div class="user">

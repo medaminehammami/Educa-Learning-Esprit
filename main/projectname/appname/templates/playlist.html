@@ -86,9 +86,6 @@
          <div class="column">
             <form action="" method="post" class="save-playlist">
                {% csrf_token %}
-               {% if messages %}
-               {{ message }}
-               {% endif %}
                <button type="submit"><i class="far fa-bookmark"></i> <span>Enroll</span></button>
             </form>
 

@@ -88,8 +88,32 @@ def playlist(request, topic_name='HTML'):
 @login_required
 def watchvideo(request,lesson_id=1):
     lesson = Lesson.objects.get(pk=lesson_id)
+    comments = Comments.objects.filter(lesson=lesson)
+    comment_user = Comments.objects.filter(student=request.user)
+    if request.method == 'POST':
+        user = request.user
+        
+        if user.role == 'STUDENT':
+            like_data = {
+            'student': user,
+            'lesson': lesson,
+            }
+            try : 
+                input_type = request.POST.get('form_type')
+                if input_type == 'comment_input' :
+                    comment_text = request.POST.get('comment_text')
+                    Comments.objects.create(student=user ,lesson=lesson,comment_text=comment_text)   
+                elif  input_type == 'like_input' :
+                    Likes.objects.create(**like_data)
+            except Exception as e:
+                print(f"An error occurred: {e}")         
+        else :
+            return HttpResponse("You can't because you are a teacher.")
+
     context = {
         'lesson': lesson,
+        'comments' : comments,
+        'comment_user' : comment_user,
     }
     template_name = 'watchvideo'  
     return render(request, template_paths[template_name],context)
@@ -181,3 +205,6 @@ def add_lesson(request):
     context = {'form': form}
     
     return render(request, template_paths[template_name],context)
+
+
+
