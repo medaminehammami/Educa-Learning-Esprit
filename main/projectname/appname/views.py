@@ -5,6 +5,9 @@ from .template_paths import template_paths
 from django.urls import reverse
 import random
 from django.contrib.auth.decorators import login_required
+from .forms import LessonForm
+from .decorators import teacher_required
+
 
 def name_teacher(request, teacher_name='Paul'):
     try:
@@ -57,6 +60,7 @@ def courses(request, catagory_name='development'):
     template_name = 'courses'  
     return render(request, template_paths[template_name],context)
 
+@login_required
 def playlist(request, topic_name='HTML'):
     lessons = Lesson.objects.filter(topic__name=topic_name)
     number_lessons = lessons.count()
@@ -68,6 +72,7 @@ def playlist(request, topic_name='HTML'):
     template_name = 'playlist'  
     return render(request, template_paths[template_name], context)
 
+@login_required
 def watchvideo(request,lesson_id=1):
     lesson = Lesson.objects.get(pk=lesson_id)
     context = {
@@ -140,4 +145,26 @@ def teachers(request):
     template_name = 'teachers'  
     return render(request, template_paths[template_name], context)
 
-
+@login_required
+@teacher_required
+def add_lesson(request):
+    template_name = 'add_lesson'  
+    if request.method == 'POST':
+        form = LessonForm(request.POST)  
+        try:
+            if form.is_valid():
+                lesson = form.save()
+                # Redirect to a success page or another view
+                return HttpResponseRedirect('/home/')  # Change the URL as needed
+        except Exception as e:
+            # Print or log the exception for debugging purposes
+            print(f"An error occurred: {e}")
+            # You can also pass the error message to the template
+            context = {'form': form, 'error_message': "An error occurred. Please try again later."}
+            return render(request, template_paths[template_name],context)
+    else:
+        form = LessonForm()  # Replace 'LessonForm' with the actual name of your form class
+    
+    context = {'form': form}
+    
+    return render(request, template_paths[template_name],context)

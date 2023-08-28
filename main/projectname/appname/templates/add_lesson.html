@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <title>profile</title>
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+ 
+</head>
+<body>
+
+    <section class="form-container ">
+        <form action="" method="POST" >
+            {% csrf_token %}
+            <h3>Add A Lesson</h3>
+            <p>Topic Name :<span>*</span></p>
+            {{ form.topic }}
+            <p>Lesson Name : <span>*</span></p>
+            <input type="text" name="name" placeholder="enter the new lesson name" required maxlength="50" class="box">
+            <p>Video_src URL<span>*</span></p>
+            <input type="text" name="video_src" placeholder="youtube iframe url" required maxlength="50" class="box">
+            <p>Lesson Text<span>*</span></p>
+            <input type="text" name="lesson_src" placeholder="pdf url/lesson text" required maxlength="50" class="box">
+            <input type="submit" value="Add New Lesson" name="submit" class="btn">
+            {{form.error}}
+        </form>
+
+    </section>
+
+    <footer class="footer">
+        &copy; copyright @ 2023 | all rights reserved!
+     </footer>
+     <!-- custom js file link  -->
+     <script src="{% static 'js/script.js' %}"></script>
+  </body>
+  
+  </html>

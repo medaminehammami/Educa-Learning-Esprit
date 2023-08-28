@@ -4,11 +4,16 @@ from django.shortcuts import render, redirect ,HttpResponseRedirect ,HttpRespons
 from django.contrib.auth import authenticate ,login  as auth_login 
 from django.contrib.auth import logout
 from .forms import RegisterForm,UserProfileUpdateForm
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,user_passes_test
 from .models import CustomUser
 from django.apps import apps
-from django.db import IntegrityError
+from django.db import IntegrityError 
+
+def is_guest(user):
+    return not user.is_authenticated
 # Create your views here.
+
+@user_passes_test(is_guest, login_url='/home/')
 def register(request):
     template_name = 'register'
     if request.method == 'POST':
@@ -52,7 +57,7 @@ def register(request):
 
     return render(request, template_path[template_name], {'form': form})
 
-
+@user_passes_test(is_guest, login_url='/home/')
 def login(request):
     if request.method == 'POST':
             username = request.POST['username']

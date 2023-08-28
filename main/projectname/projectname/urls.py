@@ -43,6 +43,6 @@ urlpatterns = [
     path('update/', v.update, name='update'),
     path('teacher_profile/', views.teacher_profile, name='teacher_profile'),
     path('name_teacher/<str:teacher_name>/', views.name_teacher, name='name_teacher'),
-    
+    path('add_lesson/', views.add_lesson, name='add_lesson'),
     
 ]

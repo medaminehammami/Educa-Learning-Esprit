@@ -15,6 +15,7 @@ template_paths = {
     'teacher_profile': os.path.join(app_base_path, 'appname/templates/teacher_profile.html'),
     'student_profile': os.path.join(app_base_path, 'appname/templates/student_profile.html'),
     'teachers': os.path.join(app_base_path, 'appname/templates/teachers.html'),
+    'add_lesson': os.path.join(app_base_path, 'appname/templates/add_lesson.html'),
 }
 
 
