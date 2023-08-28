@@ -126,7 +126,14 @@ class TeacherProfile(models.Model):
         return self.user.username 
 
 
+class Contact(models.Model):
+    names = models.CharField(max_length=50)
+    emails = models.EmailField(max_length=50)
+    numbers = models.CharField(max_length=50)
+    msgs = models.TextField()
 
+    def __str__(self):
+        return self.names
 
 
 

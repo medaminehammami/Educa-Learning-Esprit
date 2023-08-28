@@ -23,6 +23,8 @@
          <a href="{% url 'home' %}" class="logo">Educa.</a>
 
          <form action="" method="post" class="search-form">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="search_input">
             <input type="text" name="search_box" required placeholder="search courses..." maxlength="100">
             <button type="submit" class="fas fa-search"></button>
          </form>

@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect ,HttpResponseRedirect ,HttpResponse
 from register.models import CustomUser
-from .models import Topic, Lesson, Catagory,Likes,Comments,EnrolledClasses,TeacherProfile,StudentProfile,Student,Teacher
+from .models import Topic, Lesson, Catagory,Likes,Comments,EnrolledClasses,TeacherProfile,StudentProfile,Student,Teacher,Contact
 from .template_paths import template_paths
 from django.urls import reverse
 import random
 from django.contrib.auth.decorators import login_required
-from .forms import LessonForm
+from .forms import LessonForm,ContactForm
 from .decorators import teacher_required
 
 
@@ -28,6 +28,19 @@ def home(request):
     likes_count = Likes.objects.all().count()
     lessons_count = Lesson.objects.all().count()
     topics_count = Topic.objects.all().count()
+    if request.method == 'POST':
+        try : 
+            input_type = request.POST.get('form_type')
+            if input_type == 'search_input' :
+                search_text = request.POST.get('search_box')
+                if  Topic.objects.filter(name=search_text).exists() :
+                    playlist_url = reverse('playlist', args=[search_text])
+                    return HttpResponseRedirect(playlist_url)
+                else :
+                    return HttpResponse("Course doesn't exist")
+        except Exception as e:
+            print(f"An error occurred: {e}")             
+
     context = {
         'likes_count': likes_count,
         'lessons_count': lessons_count,
@@ -37,12 +50,43 @@ def home(request):
     return render(request, template_paths[template_name],context)
 
 def about(request):
+    if request.method == 'POST':
+        try : 
+            input_type = request.POST.get('form_type')
+            if input_type == 'search_input' :
+                search_text = request.POST.get('search_box')
+                if  Topic.objects.filter(name=search_text).exists() :
+                    playlist_url = reverse('playlist', args=[search_text])
+                    return HttpResponseRedirect(playlist_url)
+                else :
+                    return HttpResponse("Course doesn't exist")
+        except Exception as e:
+            print(f"An error occurred: {e}")   
+            
     template_name = 'about'  
     return render(request, template_paths[template_name])
 
 def contact(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            contact = Contact(
+                names=form.cleaned_data['name'],
+                emails=form.cleaned_data['email'],
+                numbers=form.cleaned_data['number'],
+                msgs=form.cleaned_data['msg']
+            )
+            contact.save()
+
+    else:
+        form = ContactForm()
+
+    context = {
+        'form': form
+    }
+
     template_name = 'contact'  
-    return render(request, template_paths[template_name])
+    return render(request, template_paths[template_name],context)
 
 def catagories(request):
     catagories = Catagory.objects.all()

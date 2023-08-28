@@ -84,6 +84,7 @@
       </div>
 
       <form action="" method="post">
+         {% csrf_token %}
          <h3>get in touch</h3>
          <input type="text" placeholder="enter your name" name="name" required maxlength="50" class="box">
          <input type="email" placeholder="enter your email" name="email" required maxlength="50" class="box">
