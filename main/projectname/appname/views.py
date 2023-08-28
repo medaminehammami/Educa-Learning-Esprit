@@ -64,6 +64,19 @@ def courses(request, catagory_name='development'):
 def playlist(request, topic_name='HTML'):
     lessons = Lesson.objects.filter(topic__name=topic_name)
     number_lessons = lessons.count()
+
+    if request.method == 'POST':
+        user = request.user
+        if user.role == 'STUDENT':
+            enroll_data = {
+            'user': user,
+            'topic_name': topic_name,
+            }
+            EnrolledClasses.objects.create(**enroll_data)
+           
+        else :
+            HttpResponse("You can't because you are a teacher.")
+
     context = {
         'topic_name': topic_name,
         'lessons': lessons,
@@ -108,7 +121,7 @@ def student_profile(request):
     # Get the logged-in user's StudentProfile
     student_profile = StudentProfile.objects.get(user=request.user)
     # Get enrolled classes related to the student
-    enrolled = EnrolledClasses.objects.filter(student=request.user)
+    enrolled = EnrolledClasses.objects.filter(user=request.user)
 
     topics = []  # Initialize an empty list to store topics
 

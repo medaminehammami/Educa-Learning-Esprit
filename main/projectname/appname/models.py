@@ -1,6 +1,7 @@
 from django.db import models
 from register.models import CustomUser
 from django.contrib.auth.models import BaseUserManager
+from django.contrib.auth import get_user_model
 
 
 # Create your models here.
@@ -72,11 +73,11 @@ class Comments(models.Model):
 
 
 class EnrolledClasses(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,default=1)
     topic_name = models.CharField(max_length=100)  # Or whatever fields you need
 
     def __str__(self):
-        return f"{self.username} - {self.topic}"
+        return f"{self.user.username} - {self.topic_name}"
 
 
 # ... Other models related to the "register" app
@@ -93,7 +94,7 @@ class StudentProfile(models.Model):
         return Comments.objects.filter(student=self.user).count()
 
     def number_enrolled_courses(self):
-        return EnrolledClasses.objects.filter(student=self.user).count()
+        return EnrolledClasses.objects.filter(user=self.user).count()
 
     def __str__(self):
         return self.user.username  
