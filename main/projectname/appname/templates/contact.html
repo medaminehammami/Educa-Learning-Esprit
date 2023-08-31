@@ -20,11 +20,11 @@
 
       <section class="flex">
 
-         <a href="{% url 'home' %}" class="logo">Educa.</a>
+         <a href="{% url 'home' %}"><img src="{% static 'images/logo.png' %}" alt="Educa." style="width: 90px;height:auto;" ></a>
 
-         <form action="" method="post" class="search-form">
+         <form action="" method="" class="search-form">
             <input type="text" name="search_box" required placeholder="search courses..." maxlength="100">
-            <button type="submit" class="fas fa-search"></button>
+            <button  class="fas fa-search"></button>
          </form>
 
          <div class="icons">
@@ -60,6 +60,7 @@
          <h3 class="name">{{ request.user.username }}</h3>
          <p class="role">{{ request.user.role }}</p>
          <a href="{% url 'profile' %}" class="btn">view profile</a>
+         <a href="{% url 'logout' %}" class="btn">Logout</a>
       </div>
 
       <nav class="navbar">
@@ -69,9 +70,7 @@
          <a href="{% url 'teachers' %}"><i class="fas fa-chalkboard-user"></i><span>teachers</span></a>
          <a href="{% url 'contact' %}"><i class="fas fa-headset"></i><span>contact us</span></a>
       </nav>
-      <div>
-         <a href="{% url 'logout' %}" class="btn">Logout</a>
-      </div>
+
 
    </div>
 

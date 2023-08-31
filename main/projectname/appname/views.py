@@ -89,6 +89,18 @@ def contact(request):
     return render(request, template_paths[template_name],context)
 
 def catagories(request):
+    if request.method == 'POST':
+        try : 
+            input_type = request.POST.get('form_type')
+            if input_type == 'search_input' :
+                search_text = request.POST.get('search_box')
+                if  Topic.objects.filter(name=search_text).exists() :
+                    playlist_url = reverse('playlist', args=[search_text])
+                    return HttpResponseRedirect(playlist_url)
+                else :
+                    return HttpResponse("Course doesn't exist")
+        except Exception as e:
+            print(f"An error occurred: {e}")      
     catagories = Catagory.objects.all()
     context = {'catagories': catagories}
     template_name = 'catagories'
@@ -96,6 +108,18 @@ def catagories(request):
 
 
 def courses(request, catagory_name='development'):
+    if request.method == 'POST':
+        try : 
+            input_type = request.POST.get('form_type')
+            if input_type == 'search_input' :
+                search_text = request.POST.get('search_box')
+                if  Topic.objects.filter(name=search_text).exists() :
+                    playlist_url = reverse('playlist', args=[search_text])
+                    return HttpResponseRedirect(playlist_url)
+                else :
+                    return HttpResponse("Course doesn't exist")
+        except Exception as e:
+            print(f"An error occurred: {e}")      
     topics = Topic.objects.filter(catagory__name=catagory_name)
     context = {
         'catagory_name': catagory_name,
@@ -108,18 +132,23 @@ def courses(request, catagory_name='development'):
 def playlist(request, topic_name='HTML'):
     lessons = Lesson.objects.filter(topic__name=topic_name)
     number_lessons = lessons.count()
-
     if request.method == 'POST':
-        user = request.user
-        if user.role == 'STUDENT':
-            enroll_data = {
-            'user': user,
-            'topic_name': topic_name,
-            }
-            EnrolledClasses.objects.create(**enroll_data)
-           
+        input_type = request.POST.get('form_type')
+        if input_type == 'search_input' :
+            search_text = request.POST.get('search_box')
+            if  Topic.objects.filter(name=search_text).exists() :
+                playlist_url = reverse('playlist', args=[search_text])
+                return HttpResponseRedirect(playlist_url)
         else :
-            HttpResponse("You can't because you are a teacher.")
+            user = request.user
+            if user.role == 'STUDENT':
+                enroll_data = {
+                'user': user,
+                'topic_name': topic_name,
+                }
+                EnrolledClasses.objects.create(**enroll_data)
+            else :
+                HttpResponse("You can't because you are a teacher.")
 
     context = {
         'topic_name': topic_name,

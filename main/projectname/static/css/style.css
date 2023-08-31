@@ -149,9 +149,9 @@ section{
    padding: 1.5rem 2rem;
 }
 
-.header .flex .logo{
-   font-size: 2.5rem;
-   color: var(--black);
+.header .flex .logo .img{
+   width: 60px;
+   height: auto;
 }
 
 .header .flex .search-form{
@@ -1272,8 +1272,20 @@ section{
    width: 100%;
    margin: 1rem 0;
 }
+.form-container form .select{
+   padding: 3px;
+   font-size: 15px;
+   border: 1px solid var(--border);
+   border-radius: 5px;
+   background-color:var(--light-color);
+   width: 100px;
+}
 
-
+.form-container form .select .option {
+   padding: 4px;
+   font-size: 15px;
+   color: var(--black);
+}
 
 .footer{
    background-color: var(--white);
