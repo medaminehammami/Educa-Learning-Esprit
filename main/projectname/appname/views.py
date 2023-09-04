@@ -130,7 +130,10 @@ def courses(request, catagory_name='development'):
 
 @login_required
 def playlist(request, topic_name='HTML'):
+    user = request.user
+    username=user.username
     lessons = Lesson.objects.filter(topic__name=topic_name)
+    enrolled = EnrolledClasses.objects.filter(user__username=username, topic_name=topic_name)
     number_lessons = lessons.count()
     if request.method == 'POST':
         input_type = request.POST.get('form_type')
@@ -140,8 +143,7 @@ def playlist(request, topic_name='HTML'):
                 playlist_url = reverse('playlist', args=[search_text])
                 return HttpResponseRedirect(playlist_url)
         else :
-            user = request.user
-            if user.role == 'STUDENT':
+            if (user.role == 'STUDENT') and not enrolled.exists():
                 enroll_data = {
                 'user': user,
                 'topic_name': topic_name,
