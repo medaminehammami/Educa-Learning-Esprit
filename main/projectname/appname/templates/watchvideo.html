@@ -106,9 +106,12 @@
             </form>
             {% endwith %}
          </section>
+         <div class="info"><p class="date"></p></div>
+         <h3 class="title">PDF Lesson :</h3>
+         <div style="padding:10px;text-align: center;"><embed src= "{{ lesson.lesson_src }}" width="900" height="700"  type="application/pdf" ></div>
 
+         
       </div>
-
    </section>
 
 
@@ -141,8 +144,8 @@
                {% endfor %}
             </div>
             <form action="" class="flex-btn">
-               <input type="submit" value="edit comment" name="edit_comment" class="inline-option-btn">
-               <input type="submit" value="delete comment" name="delete_comment" class="inline-delete-btn">
+               <input type="" value="edit comment" name="edit_comment" class="inline-option-btn">
+               <input type="" value="delete comment" name="delete_comment" class="inline-delete-btn">
             </form>
          </div>
          

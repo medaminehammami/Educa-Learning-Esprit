@@ -151,7 +151,7 @@ section{
 
 .header .flex .logo .img{
    width: 60px;
-    height: auto;
+   height: auto;
 }
 
 .header .flex .search-form{
@@ -758,6 +758,12 @@ section{
    width: 100%;
    object-fit: contain;
    background-color: #000;
+}
+
+.watch-video .video-container .pdf{
+   margin: 0 auto;
+   padding: 10px;
+   text-align: center;
 }
 
 .watch-video .video-container .title{

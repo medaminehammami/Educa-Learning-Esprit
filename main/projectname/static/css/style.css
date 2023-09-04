@@ -760,6 +760,12 @@ section{
    background-color: #000;
 }
 
+.watch-video .video-container .pdf{
+   margin: 0 auto;
+   padding: 10px;
+   text-align: center;
+}
+
 .watch-video .video-container .title{
    font-size: 2rem;
    color: var(--black);
